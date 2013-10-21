@@ -31,6 +31,10 @@ class index_controller extends base_controller {
 	    	*/
 	      					     		
 		# Render the view
+
+			# echo '<pre>';
+			# print_r($this->user);
+			# echo '</pre>';
 			echo $this->template;
 
 	} # End of method

@@ -1,0 +1,1 @@
+<h1>This is the profile for <?=$user->alias?></h1>
