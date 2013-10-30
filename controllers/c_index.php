@@ -19,7 +19,13 @@ class index_controller extends base_controller {
 			$this->template->content = View::instance('v_index_index');
 			
 		# Now set the <title> tag
-			$this->template->title = "Hello World";
+			$this->template->title = "Vultor: Follow interests, not people and #'s";
+
+		# Pass in the login module
+			$this->template->content->signup_module = View::instance('v_signup_module');
+	
+		# Pass in the login module
+			$this->template->content->login_module = View::instance('v_login_module');
 	
 		# CSS/JS includes
 			/*

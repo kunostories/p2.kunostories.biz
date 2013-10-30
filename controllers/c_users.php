@@ -74,15 +74,15 @@ class users_controller extends base_controller {
         # Hash submitted password so we can compare it against one in the db
         $_POST['password'] = sha1(PASSWORD_SALT.$_POST['password']);
 
-        # Search the db for this email
-        $q = "SELECT email 
+        # Search the db for this alias
+        $q = "SELECT alias 
             FROM users 
-            WHERE email = '".$_POST['email']."'";
+            WHERE alias = '".$_POST['alias']."'";
 
-        $email_exist = DB::instance(DB_NAME)->select_field($q);
+        $alias_exist = DB::instance(DB_NAME)->select_field($q);
 
         # If we didn't find a the email in the database, it means login failed
-        if(!$email_exist) {
+        if(!$alias_exist) {
 
             # Send them back to the login page
             Router::redirect("/users/login/error");
@@ -93,7 +93,7 @@ class users_controller extends base_controller {
             # Retrieve the token if it's available
             $q = "SELECT token 
                 FROM users 
-                WHERE email = '".$_POST['email']."'
+                WHERE alias = '".$_POST['alias']."'
                 AND password = '".$_POST['password']."'";
 
             $token = DB::instance(DB_NAME)->select_field($q);

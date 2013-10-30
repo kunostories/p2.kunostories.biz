@@ -7,6 +7,21 @@
   green darker btn: #1F9783;
 */
 
+@font-face {
+  font-family: 'Catull';
+  src: url('/libraries/fonts/Catull.ttf');
+}
+@font-face {
+  font-family: 'Catull';
+  src: url('/libraries/fonts/Catull-Bold.ttf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Catull';
+  src: url('/libraries/fonts/Catull-Italic.ttf');
+  font-style: italic;
+}
+
 body {
   color: #333;
   font-size: 16px;
@@ -14,6 +29,10 @@ body {
   padding-top: 15px;
   padding-bottom: 20px;
   background-color: #446CB3;
+}
+
+.center {
+  text-align: center;
 }
 
 /* Custom container */
@@ -24,16 +43,28 @@ body {
   background-color: #fff;
 }
 
+h1, h2, h3 {
+  font-family: 'Catull', 'Georgia', serif;
+  font-weight: bold;
+}
+
+header span {
+  font-size: .5em;
+  line-height: .7em;
+  font-weight: normal;
+  font-style: italic;
+}
+
 .main-content {
-  padding: 20px 0;
+  padding: 0 0 20px 0;
 }
 
 .main-content > hr {
   margin: 30px 0;
 }
 
-h1, h2, h3 {
-	text-align: center;
+img.float-left {
+  float: left;
 }
 
 h4, .nav-top {
@@ -47,9 +78,9 @@ font-weight: bold;
 line-height: 1em;
 
 .rounded-corners {
-border-radius:16.5%;
+border-radius: 16.5%;
 }
 
 .rounded-corners-2 {
-border-radius:2%;
+border-radius: 2%;
 }

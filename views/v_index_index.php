@@ -1,36 +1,37 @@
-<header>
-	<h1>Welcome to <?=APP_NAME?><?php if($user) echo ', '.$user->first_name; ?></h1>
-	<h2>A microblog for people interested in things<h2>
-	<h3>(not just people and #hashtags)</h3>
-</header>
+<div class="row">
+	<div class="col-sm-12">
+		<header class="center">
+			<img src="/img/vultor-title.png" alt="vultor title">
+			<p class="lead">Follow interests... not just people and #'s</p>
+		</header>
+	</div>
+</div>
 
-<p>
-	<a href="users/signup" title="Register for an account">Create an alias</a> or<br>
-	<a href="users/login" title="login">Login</a> if you're interested in things.
-</p>
+<div class="row">
+	<div class="col-sm-5 well">
+		<?php if(!$user): ?>
+	        <!-- Display the login module -->
+			<?=$signup_module ?>
 
-<p>
-	Things like:
-</p>
+		<?php else: ?>
 
-<ul>
-	<li>Game of War</li>
-	<li>Web design</li>
-	<li>Stocks</li>
-</ul>
+			<h2>Fresh Posts</h2>
+			<!-- Display the 5 newest posts-->
+			<a href="/posts" class="btn btn-lg btn-danger">View posts</a>
 
-<p>
-	With an alias (aka. an account), you will be able to:
-</p>
+		<?php endif; ?>
+	</div>
+	<div class="col-sm-5 col-sm-offset-2 well">
+		<?php if(!$user): ?>
+	        <!-- Display the login module -->
+			<?=$login_module ?>
 
-<ul>
-	<li>Post about interesting things</li>
-	<li>Follow interests</li>
-	<li>Follow interesting people</li>
-	<li>Unfollow boring things / people</li>
-	<li>View the world (of interesting things and people)</li>
-</ul>
+		<?php else: ?>
 
-<p>
-	This message is being triggered via the c_index.php controller, within the index() method.
-</p>
+			<h2>Welcome <?=$user->alias ?> </h2>
+			<!-- Display the 5 newest posts of user's interests-->
+			<a href="/posts/add" class="btn btn-lg btn-warning">Say something</a>
+
+		<?php endif; ?>
+	</div>
+</div>

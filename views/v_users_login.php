@@ -1,17 +1,17 @@
 <form method="POST" action="/users/p_login" role="form">
-  <legend>Login</legend>
+  <h2>Log in</h2>
     <?php if(isset($error)): ?>
       <div>
         <p class="text-danger">
-        	Login failed. Please check your email or password and try again.
+        	Log in failed. Please check your email or password and try again.
         </p>
       </div>
       <br>
 	    <?php endif; ?>
 
 	    <div class="form-group">
-	    <label for="email">Email</label>
-	    <input type="email" name="email" class="form-control" placeholder="Enter email" required>
+	    <label for="alias">Alias</label>
+	    <input type="text" name="alias" class="form-control" placeholder="alias name" required>
 	</div>
 
 	<div class="form-group">
