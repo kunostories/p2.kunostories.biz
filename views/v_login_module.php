@@ -3,7 +3,7 @@
     <?php if(isset($error)): ?>
 	<div>
 		<p class="text-danger">
-			Log in failed. Please check your email or password and try again.
+			<?=$error ?>
 		</p>
 	</div>
 	<br>

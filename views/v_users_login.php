@@ -1,15 +1,16 @@
 <form method="POST" action="/users/p_login" role="form">
   <h2>Log in</h2>
     <?php if(isset($error)): ?>
-      <div>
-        <p class="text-danger">
-        	Log in failed. Please check your email or password and try again.
-        </p>
-      </div>
-      <br>
-	    <?php endif; ?>
+	<div>
+		<p class="text-danger">
+			<?=$error ?>
+		</p>
+	</div>
+	<br>
 
-	    <div class="form-group">
+	<?php endif; ?>
+
+    <div class="form-group">
 	    <label for="alias">Alias</label>
 	    <input type="text" name="alias" class="form-control" placeholder="alias name" required>
 	</div>

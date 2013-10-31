@@ -39,8 +39,9 @@
 					<li><a href="/users/signup">Sign up</a></li>
 					<li><a href="/users/login">Log in</a></li>
 					<? else: ?>
-					<li><a href="#posts/browse">Browse</a></li>
-					<li><a href="users/profile">Profile</a></li>
+					<li><a href="/posts">Posts</a></li>
+					<li><a href="/posts/users">User List</a></li>
+					<li><a href="/users/profile/<?=$_SESSION['user']; ?>">Profile for <?=$_SESSION['user']; ?></a></li>
 					<li><a href="/users/logout">Logout</a></li>
 					<? endif; ?>
 				</ul>
@@ -51,6 +52,7 @@
 			<div class="clearfix"></div>
 
 			<div class="main-content">
+				<?php if(isset($error)) echo "<p class='text-danger'>".$error."</p>"; ?>
 				<?php if(isset($content)) echo $content; ?>
 				<?php if(isset($client_files_body)) echo $client_files_body; ?>
 			</div> <!--/#main-content-->
