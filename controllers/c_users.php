@@ -6,14 +6,30 @@ class users_controller extends base_controller {
     } 
 
     public function index() {
-        echo "This is the index page";
+        # Send them back to the main index.
+        Router::redirect("/");
     }
 
-    public function signup() {
+    public function signup($error = NULL) {
 
         # Setup view
             $this->template->content = View::instance('v_users_signup');
             $this->template->title   = "Sign Up";
+
+        if($error == 'alias') {
+        # State the error
+        $error = "Sorry. That alias is taken. Be more creative.";
+        }
+        elseif($error == 'email') {
+            # State the error
+            $error = "Whoa, whoa, whoa... one alias at a time, please. (your email is already signed up.)";
+        }
+        else {
+            $error = NULL;
+        }
+
+        # Pass data to the view
+        $this->template->content->error = $error;
 
         # Render template
             echo $this->template;
@@ -42,9 +58,16 @@ class users_controller extends base_controller {
         $email_exist = DB::instance(DB_NAME)->select_field('SELECT email FROM users WHERE email = "'.$_POST['email'].'"');
         $alias_exist = DB::instance(DB_NAME)->select_field('SELECT alias FROM users WHERE alias = "'.$_POST['alias'].'"');
 
-            if($email_exist || $alias_exist) {
-                echo "Sorry, this email or alias already exists. Want to <a href='/users/login'>log in</a>?";
+            if($email_exist) {
+                # Send them to the sign up page
+                Router::redirect("/users/signup/email");
             }
+            elseif($alias_exist){
+                # Send them to the sign up page
+                Router::redirect("/users/signup/alias");
+            }
+
+            # Else they're good to go
             else{
 
                 # Insert this user into the database insert($table, $data)
@@ -92,6 +115,18 @@ class users_controller extends base_controller {
         $this->template->content = View::instance('v_users_login');
         $this->template->title   = "Login";
 
+        if($error == 'alias') {
+            # State the error
+            $error = "Sorry. That alias does not exist. Try again.";
+        }
+        elseif($error == 'pass') {
+            # State the error
+            $error = "Whoops! Incorrect password. Please, try again.";
+        }
+        else {
+            $error = NULL;
+        }
+
         # Pass data to the view
         $this->template->content->error = $error;
 
@@ -118,11 +153,8 @@ class users_controller extends base_controller {
         # If we didn't find a the alias in the database, it means login failed
         if(!$alias_exist) {
 
-            # State the error
-            $error = "Sorry. That alias does not exist. Try again.";
-            
             # Send them back to the login page
-            Router::redirect("/users/login/error");
+            Router::redirect("/users/login/alias");
         }
 
         else {
@@ -139,10 +171,10 @@ class users_controller extends base_controller {
             if(!$token) {
 
                 # State the error
-                $error = "Incorrect password. Please, try again.";
+                $this->error = "Incorrect password. Please, try again.";
 
                 # Send them back to the login page
-                Router::redirect("/users/login/error");
+                Router::redirect("/users/login/pass");
 
             # But if we did, login succeeded! 
             } else {
@@ -186,11 +218,25 @@ class users_controller extends base_controller {
 
     }
 
-    public function profile($alias = NULL) {
+    public function profile($alias = NULL, $success = NULL) {
 
         if($alias == $this->user->alias) {
             $this->template->content = View::instance('v_users_profile_edit');
             $this->template->title = "Edit profile for $alias";
+
+            if($success == 'success') {
+                $this->template->content->success = 'Success! Profile updated!';
+            }
+            elseif($success == NULL) {
+                $this->template->content->success = NULL;
+            }
+            else {
+                $this->template->content->success = "Watchu talkin' bout, ".$success."?";
+            }
+        }
+        elseif($alias = NULL) {
+            # Send them back to the main index.
+            Router::redirect("/");
         }
         else {
             $this->template->content = View::instance('v_users_profile');

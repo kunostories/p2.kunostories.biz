@@ -51,12 +51,12 @@
 			</div>
 			<div class="clearfix"></div>
 
-			<div class="main-content">
+			<div class="main-content row">
 				<?php if(isset($error)) echo "<p class='text-danger'>".$error."</p>"; ?>
 				<?php if(isset($content)) echo $content; ?>
 				<?php if(isset($client_files_body)) echo $client_files_body; ?>
 			</div> <!--/#main-content-->
-			<div class="footer">
+			<div class="footer row">
 				<p>&copy; Vultor 2013</p>
 			</div>
 		</div> <!--/.container-->

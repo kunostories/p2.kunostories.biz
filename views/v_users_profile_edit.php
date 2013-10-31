@@ -3,7 +3,7 @@
 	<p class='text-danger'>
 		<?=$error;?>
 	</p>
-		<p class='text-success'>
+	<p class='text-success'>
 		<?=$success;?>
 	</p>
 
