@@ -28,17 +28,17 @@
 		<input type="text" name="last_name" class="form-control" value="<?=$user->last_name?>">
 	</div>
 
+	<div class="form-group">
+		<label for="location">Location:</label>
+		<input type="text" name="location" class="form-control" value="<?=$user->location?>">
+	</div>
+
+	<div class="form-group">
+		<label for="age">Age:</label>
+		<input type="text" name="age" class="form-control" value="<?=$user->age?>">
+	</div>
+
 	<input class="btn btn-lg btn-warning" type="submit" value="Edit Profile">
 </form>
 
 <br>
-
-<?
-	 echo '<pre> This is user';
-	 print_r($user);
-	 echo '</pre>';
-
-	 echo '<pre> THis is alias';
-	 print_r($alias);
-	 echo '</pre>';
-?>

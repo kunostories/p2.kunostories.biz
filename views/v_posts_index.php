@@ -2,13 +2,14 @@
 
 <article>
 
-    <h3><?=$post['alias']?> sez:</h3>
-
-    <p><?=$post['content']?></p>
-
-    <time datetime="<?=Time::display($post['created'],'Y-m-d G:i')?>">
-        <?=Time::display($post['created'])?>
-    </time>
+    <p>
+    	<strong><a href="/users/profile/<?=$post['alias']?>"><?=$post['alias']?></a> sez:</strong>
+    	<?=$post['content']?><br>
+	    <time class="text-muted" datetime="<?=Time::display($post['created'],'Y-m-d G:i')?>">
+    	    <?=Time::display($post['created'])?>
+    	</time>
+    </p>
+    <hr>
 
 </article>
 

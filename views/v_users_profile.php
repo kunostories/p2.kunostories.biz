@@ -21,6 +21,16 @@
 			<label for="last_name">Last Name:</label>
 			<?=$alias['last_name']?>
 		</div>
+
+		<div class="form-group">
+			<label for="Location">Location:</label>
+			<?=$alias['location']?>
+		</div>
+
+		<div class="form-group">
+			<label for="age">Age:</label>
+			<?=$alias['age']?>
+		</div>
 </form>
 
 <!-- If there exists a connection with this user, show a unfollow link -->

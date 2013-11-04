@@ -12,7 +12,7 @@ If you want a different default time format for this app, set it below
 	define('TIME_FORMAT', 'M j Y'); 
 
 */
-	if(!defined('TIME_FORMAT')) define('TIME_FORMAT', 'F j, Y g:ia'); 
+	if(!defined('TIME_FORMAT')) define('TIME_FORMAT', 'M j, Y g:ia'); 
 
 # What is the name of this app?
 	define('APP_NAME', 'Vultor');  

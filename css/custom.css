@@ -48,6 +48,10 @@ h1, h2, h3 {
   font-weight: bold;
 }
 
+h3.post {
+  float: left;
+}
+
 header span {
   font-size: .5em;
   line-height: .7em;

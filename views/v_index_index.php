@@ -34,3 +34,13 @@
 		<?php endif; ?>
 	</div>
 </div>
+
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-3">
+		<h4>Extra features:</h4>
+		<ol>
+			<li>Edit your profile, including Alias, Location and Age</li>
+			<li>View other users' profiles, and follow/unfollow the user from their profile page</li>
+		</ol>
+	</div>
+</div>

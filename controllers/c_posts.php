@@ -18,7 +18,7 @@ class posts_controller extends base_controller {
         $this->template->title   = "New Post";
 
         if($success == 'success') {
-                $this->template->content->success = 'Success! Posted! Want to say something else?';
+                $this->template->content->success = 'Posted! Want to say something else?';
             }
             elseif($success == NULL) {
                 $this->template->content->success = NULL;
