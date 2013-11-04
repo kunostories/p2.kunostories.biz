@@ -7,7 +7,6 @@
 		</p>
 	</div>
 	<br>
-	
 	<?php endif; ?>
 
 	<div class="form-group">

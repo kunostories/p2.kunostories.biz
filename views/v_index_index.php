@@ -1,8 +1,7 @@
 <div class="row">
 	<div class="col-sm-12">
 		<header class="center">
-			<img src="/img/vultor-title.png" alt="vultor title">
-			<p class="lead">Follow interests... not just people and #'s</p>
+			<p class="lead">A microblog for Vultures and Condors!</p>
 		</header>
 	</div>
 </div>

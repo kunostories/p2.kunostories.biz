@@ -32,14 +32,10 @@ class users_controller extends base_controller {
         $this->template->content->error = $error;
 
         # Render template
-            echo $this->template;
+        echo $this->template;
     }
 
     public function p_signup() {
-
-        # Setup view
-            $this->template->content = View::instance('v_users_profile_edit');
-            $this->template->title   = "Edit profile";
 
         # Dump out the results of POST to see what the form submitted
         // print_r($_POST);
@@ -54,59 +50,42 @@ class users_controller extends base_controller {
         # Create an encrypted token via their email address and a random string
         $_POST['token'] = sha1(TOKEN_SALT.$_POST['email'].Utils::generate_random_string());
 
-        # Check if user email or alias exists
+        # Check if user email exists
         $email_exist = DB::instance(DB_NAME)->select_field('SELECT email FROM users WHERE email = "'.$_POST['email'].'"');
-        $alias_exist = DB::instance(DB_NAME)->select_field('SELECT alias FROM users WHERE alias = "'.$_POST['alias'].'"');
 
             if($email_exist) {
                 # Send them to the sign up page
                 Router::redirect("/users/signup/email");
             }
-            elseif($alias_exist){
+
+        # Check if user alias exists
+        $alias_exist = DB::instance(DB_NAME)->select_field('SELECT alias FROM users WHERE alias = "'.$_POST['alias'].'"');
+
+            if($alias_exist){
                 # Send them to the sign up page
                 Router::redirect("/users/signup/alias");
             }
 
-            # Else they're good to go
-            else{
+            # If email and alias are availble register the user
+            # Insert this user into the database insert($table, $data)
+            $user_id = DB::instance(DB_NAME)->insert('users', $_POST);
 
-                # Insert this user into the database insert($table, $data)
-                $user_id = DB::instance(DB_NAME)->insert('users', $_POST);
+            $token = $_POST['token'];
 
-                # Search for token and password
-                # Retrieve the token if it's available
-                $q = "SELECT token 
-                    FROM users 
-                    WHERE alias = '".$_POST['alias']."'
-                    AND password = '".$_POST['password']."'";
+            /* 
+            Store this token in a cookie using setcookie()
+            Important Note: *Nothing* else can echo to the page before setcookie is called
+            Not even one single white space.
+            param 1 = name of the cookie
+            param 2 = the value of the cookie
+            param 3 = when to expire
+            param 4 = the path of the cookie (a single forward slash sets it for the entire domain)
+            */
+            setcookie("token", $token, strtotime('+1 year'), '/');
 
-                $token = DB::instance(DB_NAME)->select_field($q);
+            # Redirect to edit view
+            Router::redirect("/users/profile/".$_POST['alias']);
 
-                # If we didn't find a matching token in the database, it means login failed
-                if(!$token) {
-
-                    # Send them back to the login page
-                    Router::redirect("/users/login/error");
-
-                # But if we did, login succeeded! 
-                } else {
-
-                    /* 
-                    Store this token in a cookie using setcookie()
-                    Important Note: *Nothing* else can echo to the page before setcookie is called
-                    Not even one single white space.
-                    param 1 = name of the cookie
-                    param 2 = the value of the cookie
-                    param 3 = when to expire
-                    param 4 = the path of the cookie (a single forward slash sets it for the entire domain)
-                    */
-                    setcookie("token", $token, strtotime('+1 year'), '/');
-
-                    # For now, just confirm they've signed up - 
-                    # You should eventually make a proper View for this
-                    echo $this->template;
-                }
-            }
         }
 
     public function login($error = NULL) {
@@ -234,7 +213,7 @@ class users_controller extends base_controller {
                 $this->template->content->success = "Watchu talkin' bout, ".$success."?";
             }
         }
-        elseif($alias = NULL) {
+        elseif($alias == NULL) {
             # Send them back to the main index.
             Router::redirect("/");
         }
@@ -251,6 +230,13 @@ class users_controller extends base_controller {
             # Execute the query to get the user's info. 
             # Store the result array in the variable $alias
             $alias = DB::instance(DB_NAME)->select_rows($q);
+
+            if(empty($alias)) {
+                $this->template->content->error   = "Sorry, this alias does not exist.";
+            }
+            else {
+                $this->template->content->error   = NULL;
+            }
 
             # Build the query to figure out what connections the logged in user has 
             # I.e. if they are following this alias user
@@ -284,7 +270,7 @@ class users_controller extends base_controller {
                 # Get the users' info
                 $q = "SELECT *
                     FROM users
-                    WHERE users.alias = '".$_SESSION['user']."'";
+                    WHERE user_id = ".$this->user->user_id;
 
                 # Execute the query to get the user's info. 
                 # Store the result array in the variable $user
@@ -300,7 +286,7 @@ class users_controller extends base_controller {
                 $new_user = DB::instance(DB_NAME)->update('users', $_POST, $where_condition);
 
                 if (count($new_user) == 1){
-                    Router::redirect("/users/profile/".$_SESSION['user']."/success");
+                    Router::redirect("/users/profile/".$_POST['alias']."/success");
                 }
                 else {
                     Router::redirect("/users/profile/");

@@ -11,11 +11,21 @@ class posts_controller extends base_controller {
         }
     }
 
-    public function add() {
+    public function add($success = NULL) {
 
         # Setup view
         $this->template->content = View::instance('v_posts_add');
         $this->template->title   = "New Post";
+
+        if($success == 'success') {
+                $this->template->content->success = 'Success! Posted! Want to say something else?';
+            }
+            elseif($success == NULL) {
+                $this->template->content->success = NULL;
+            }
+            else {
+                $this->template->content->success = "Why don't you say that to my face?!";
+            }
 
         # Render template
         echo $this->template;
@@ -35,8 +45,8 @@ class posts_controller extends base_controller {
         # Note we didn't have to sanitize any of the $_POST data because we're using the insert method which does it for us
         DB::instance(DB_NAME)->insert('posts', $_POST);
 
-        # Quick and dirty feedback
-        echo "Your post has been added. <a href='/posts/add'>Add another</a>";
+        # Success page
+        Router::redirect("/posts/add/success");
 
     }
 
@@ -64,6 +74,11 @@ class posts_controller extends base_controller {
 
 	    # Run the query
 	    $posts = DB::instance(DB_NAME)->select_rows($q);
+
+	    if(empty($posts)) {
+	    	# No posts, so direct to users list to follow users
+        	Router::redirect("/posts/users");
+	    }
 
 	    # Pass data to the View
 	    $this->template->content->posts = $posts;

@@ -1,3 +1,9 @@
+<? if(isset($error)): ?>
+<h2>
+	<span class='text-danger'><?=$error;?></span>
+</h2>
+<? else: ?>
+
 <h1>Profile of <?=$alias['alias']?></h1>
 
 <form>
@@ -26,10 +32,5 @@
         <a href='/posts/follow/<?=$alias['user_id']?>' class="btn btn-success">Follow</a>
     <?php endif; ?>
 
+<? endif; ?>
 <br>
-
-<?
-	echo '<pre>';
-	print_r($user);
-	echo '</pre>';
-?>
