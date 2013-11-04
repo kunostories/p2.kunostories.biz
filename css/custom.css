@@ -76,11 +76,3 @@ label, input, button, select, textarea {
 font-size: 1em;
 font-weight: bold;
 line-height: 1em;
-
-.rounded-corners {
-border-radius: 16.5%;
-}
-
-.rounded-corners-2 {
-border-radius: 2%;
-}

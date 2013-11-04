@@ -13,12 +13,12 @@ class users_controller extends base_controller {
     public function signup($error = NULL) {
 
         # Setup view
-            $this->template->content = View::instance('v_users_signup');
-            $this->template->title   = "Sign Up";
+        $this->template->content = View::instance('v_users_signup');
+        $this->template->title   = "Sign Up";
 
         if($error == 'alias') {
-        # State the error
-        $error = "Sorry. That alias is taken. Be more creative.";
+            # State the error
+            $error = "Sorry. That alias is taken. Be more creative.";
         }
         elseif($error == 'email') {
             # State the error
@@ -51,42 +51,44 @@ class users_controller extends base_controller {
         $_POST['token'] = sha1(TOKEN_SALT.$_POST['email'].Utils::generate_random_string());
 
         # Check if user email exists
-        $email_exist = DB::instance(DB_NAME)->select_field('SELECT email FROM users WHERE email = "'.$_POST['email'].'"');
+        $email_exist = DB::instance(DB_NAME)->select_field('SELECT email 
+            FROM users 
+            WHERE email = "'.$_POST['email'].'"');
 
-            if($email_exist) {
-                # Send them to the sign up page
-                Router::redirect("/users/signup/email");
-            }
+        if($email_exist) {
+            # Send them to the sign up page
+            Router::redirect("/users/signup/email");
+        }
 
         # Check if user alias exists
         $alias_exist = DB::instance(DB_NAME)->select_field('SELECT alias FROM users WHERE alias = "'.$_POST['alias'].'"');
 
-            if($alias_exist){
-                # Send them to the sign up page
-                Router::redirect("/users/signup/alias");
-            }
-
-            # If email and alias are availble register the user
-            # Insert this user into the database insert($table, $data)
-            $user_id = DB::instance(DB_NAME)->insert('users', $_POST);
-
-            $token = $_POST['token'];
-
-            /* 
-            Store this token in a cookie using setcookie()
-            Important Note: *Nothing* else can echo to the page before setcookie is called
-            Not even one single white space.
-            param 1 = name of the cookie
-            param 2 = the value of the cookie
-            param 3 = when to expire
-            param 4 = the path of the cookie (a single forward slash sets it for the entire domain)
-            */
-            setcookie("token", $token, strtotime('+1 year'), '/');
-
-            # Redirect to edit view
-            Router::redirect("/users/profile/".$_POST['alias']);
-
+        if($alias_exist){
+            # Send them to the sign up page
+            Router::redirect("/users/signup/alias");
         }
+
+        # If email and alias are availble register the user
+        # Insert this user into the database insert($table, $data)
+        $user_id = DB::instance(DB_NAME)->insert('users', $_POST);
+
+        $token = $_POST['token'];
+
+        /* 
+        Store this token in a cookie using setcookie()
+        Important Note: *Nothing* else can echo to the page before setcookie is called
+        Not even one single white space.
+        param 1 = name of the cookie
+        param 2 = the value of the cookie
+        param 3 = when to expire
+        param 4 = the path of the cookie (a single forward slash sets it for the entire domain)
+        */
+        setcookie("token", $token, strtotime('+1 year'), '/');
+
+        # Redirect to edit view
+        Router::redirect("/users/profile/".$_POST['alias']);
+
+    }
 
     public function login($error = NULL) {
 
@@ -101,6 +103,10 @@ class users_controller extends base_controller {
         elseif($error == 'pass') {
             # State the error
             $error = "Whoops! Incorrect password. Please, try again.";
+        }
+        elseif($error == 'login') {
+            # State the error
+            $error = "You must be logged in to view this content.";
         }
         else {
             $error = NULL;
@@ -135,7 +141,6 @@ class users_controller extends base_controller {
             # Send them back to the login page
             Router::redirect("/users/login/alias");
         }
-
         else {
             # Search for token and password
             # Retrieve the token if it's available
@@ -222,77 +227,78 @@ class users_controller extends base_controller {
             $this->template->title = "Profile for $alias";
         }
 
-            # Build the query to get the alias' info
-            $q = "SELECT *
-                FROM users
-                WHERE users.alias = '".$alias."'";
+        # Build the query to get the alias' info
+        $q = "SELECT *
+            FROM users
+            WHERE users.alias = '".$alias."'";
 
-            # Execute the query to get the user's info. 
-            # Store the result array in the variable $alias
-            $alias = DB::instance(DB_NAME)->select_rows($q);
+        # Execute the query to get the user's info. 
+        # Store the result array in the variable $alias
+        $alias = DB::instance(DB_NAME)->select_rows($q);
 
-            if(empty($alias)) {
-                $this->template->content->error   = "Sorry, this alias does not exist.";
-            }
-            else {
-                $this->template->content->error   = NULL;
-            }
-
-            # Build the query to figure out what connections the logged in user has 
-            # I.e. if they are following this alias user
-            $q2 = "SELECT * 
-                FROM users_users
-                WHERE user_id = ".$this->user->user_id;
-
-            # Execute this query with the select_array method
-            # select_array will return our results in an array and use the "users_id_followed" field as the index.
-            # This will come in handy when we get to the view
-            # Store our results (an array) in the variable $connections
-            $connections = DB::instance(DB_NAME)->select_array($q2, 'user_id_followed');
-
-            # Pass data (users and connections) to the view
-            # $this->template->content->user       = $user;
-            $this->template->content->connections = $connections;
-
-            # Pass information to the view instance
-            $this->template->content->alias = $alias[0];
-
-            # Render View
-            echo $this->template;
+        if(empty($alias)) {
+            $this->template->content->error   = "Sorry, this alias does not exist.";
         }
+        else {
+            $this->template->content->error   = NULL;
+        }
+
+        # Build the query to figure out what connections the logged in user has 
+        # I.e. if they are following this alias user
+        $q2 = "SELECT * 
+            FROM users_users
+            WHERE user_id = ".$this->user->user_id;
+
+        # Execute this query with the select_array method
+        # select_array will return our results in an array and use the "users_id_followed" field as the index.
+        # This will come in handy when we get to the view
+        # Store our results (an array) in the variable $connections
+        $connections = DB::instance(DB_NAME)->select_array($q2, 'user_id_followed');
+
+        # Pass data (users and connections) to the view
+        # $this->template->content->user       = $user;
+        $this->template->content->connections = $connections;
+
+        # Pass information to the view instance
+        $this->template->content->alias = $alias[0];
+
+        # Render View
+        echo $this->template;
+    }
 
 
     public function p_edit() {
 
-                # More data we want stored with the user
-                $_POST['modified'] = Time::now();
+        # More data we want stored with the user
+        $_POST['modified'] = Time::now();
 
-                # Get the users' info
-                $q = "SELECT *
-                    FROM users
-                    WHERE user_id = ".$this->user->user_id;
+        # Get the users' info
+        $q = "SELECT *
+            FROM users
+            WHERE user_id = ".$this->user->user_id;
 
-                # Execute the query to get the user's info. 
-                # Store the result array in the variable $user
-                $user = DB::instance(DB_NAME)->select_rows($q);
+        # Execute the query to get the user's info. 
+        # Store the result array in the variable $user
+        $user = DB::instance(DB_NAME)->select_rows($q);
 
-                # Store the user_id in the variable $user_id
-                $user_id = $user[0]['user_id'];
+        # Store the user_id in the variable $user_id
+        $user_id = $user[0]['user_id'];
 
-                # Set the where condtion to update
-                $where_condition = "WHERE user_id = ".$user_id ;
+        # Set the where condtion to update
+        $where_condition = "WHERE user_id = ".$user_id ;
 
-                # Update the database update($table, $data, $where)
-                $new_user = DB::instance(DB_NAME)->update('users', $_POST, $where_condition);
+        # Update the database update($table, $data, $where)
+        $new_user = DB::instance(DB_NAME)->update('users', $_POST, $where_condition);
 
-                if (count($new_user) == 1){
-                    Router::redirect("/users/profile/".$_POST['alias']."/success");
-                }
-                else {
-                    Router::redirect("/users/profile/");
-                    $this->template->error   = "Something went wrong with the update query. Try again?";
-                }
-
+        # Send to success page if it worked, error if it didn't
+        if (count($new_user) == 1){
+            Router::redirect("/users/profile/".$_POST['alias']."/success");
         }
+        else {
+            Router::redirect("/users/profile/");
+            $this->template->error   = "Something went wrong with the update query. Try again?";
+        }
+
+    }
 
 } # end of the class

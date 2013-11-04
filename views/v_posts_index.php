@@ -1,16 +1,28 @@
 <?php foreach($posts as $post): ?>
 
-<article>
+	<article>
+		<p>
+			<!-- user's alias name is bolded -->
+			<strong>
+				<a href="/users/profile/<?=$post['alias']?>">
+					<?=$post['alias']?>
+				</a>
+				sez:
+			</strong>
 
-    <p>
-    	<strong><a href="/users/profile/<?=$post['alias']?>"><?=$post['alias']?></a> sez:</strong>
-    	<?=$post['content']?><br>
-	    <time class="text-muted" datetime="<?=Time::display($post['created'],'Y-m-d G:i')?>">
-    	    <?=Time::display($post['created'])?>
-    	</time>
-    </p>
-    <hr>
+			<!-- what the user says is inline with alias name -->
+			<?=$post['content']?>
 
-</article>
+			<br>
+
+			<!-- time post was created is muted -->
+		    <time class="text-muted" datetime="<?=Time::display($post['created'],'Y-m-d G:i')?>">
+			    <?=Time::display($post['created'])?>
+			</time>
+		</p>
+
+		<!-- line to divide each post more clearly -->
+		<hr>
+	</article>
 
 <?php endforeach; ?>
