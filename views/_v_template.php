@@ -19,10 +19,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 		<script src="/libraries/bootstrap3.0/js/bootstrap.min.js"></script>
-		<script src="/libraries/bootstrap/js/bootstrap-button.js" type="text/javascript">
-		</script>
-		<script src="/libraries/bootstrap/js/bootstrap-collapse.js" type="text/javascript">
-		</script>
+		
 
 		<!-- Controller Specific JS/CSS -->
 		<?php if(isset($client_files_head)) echo $client_files_head; ?>
