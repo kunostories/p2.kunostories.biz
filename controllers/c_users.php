@@ -24,6 +24,10 @@ class users_controller extends base_controller {
             # State the error
             $error = "Whoa, whoa, whoa... one alias at a time, please. (your email is already signed up.)";
         }
+        elseif($error == 'length') {
+            # State the error
+            $error = "Your alias and password must be at least 3 characters.";
+        }
         else {
             $error = NULL;
         }
@@ -39,6 +43,13 @@ class users_controller extends base_controller {
 
         # Dump out the results of POST to see what the form submitted
         // print_r($_POST);
+
+        # Make sure alias and password are at least 3 characters long
+        if(strlen($_POST['alias']) < 3 || strlen($_POST['password']) < 3) {
+
+            # Send them back to the sign up page
+            Router::redirect("/users/signup/length");
+        }
 
         # More data we want stored with the user
         $_POST['created']  = Time::now();
@@ -209,13 +220,13 @@ class users_controller extends base_controller {
             $this->template->title = "Edit profile for $alias";
 
             if($success == 'success') {
-                $this->template->content->success = 'Success! Profile updated!';
+                $this->template->content->success = "Success! Profile updated!";
             }
             elseif($success == NULL) {
                 $this->template->content->success = NULL;
             }
-            else {
-                $this->template->content->success = "Watchu talkin' bout, ".$success."?";
+            elseif($success == 'length') {
+                $this->template->content->error = "Your alias must be at least 3 characters.";
             }
         }
         elseif($alias == NULL) {
@@ -268,6 +279,13 @@ class users_controller extends base_controller {
 
 
     public function p_edit() {
+
+        # Make sure alias and password are at least 3 characters long
+        if(strlen($_POST['alias']) < 3) {
+
+            # Send them back to the sign up page
+            Router::redirect("/users/profile/".$this->user->alias."/length");
+        }
 
         # More data we want stored with the user
         $_POST['modified'] = Time::now();

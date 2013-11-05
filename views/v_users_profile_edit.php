@@ -35,7 +35,7 @@
 
 	<div class="form-group">
 		<label for="age">Age:</label>
-		<input type="text" name="age" class="form-control" value="<?=$user->age?>">
+		<input type="number" min="5" max="109" step="1" name="age" class="form-control" value="<?=$user->age?>">
 	</div>
 
 	<input class="btn btn-lg btn-warning" type="submit" value="Edit Profile">

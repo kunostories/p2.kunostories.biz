@@ -1,4 +1,4 @@
-<!-- begin sign up module form -->
+		<!-- begin sign up module form -->
 		<form method="POST" action="/users/p_signup" role="form">
 			<h2>Sign up</h2>
 
