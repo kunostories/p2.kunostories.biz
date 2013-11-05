@@ -226,7 +226,10 @@ class users_controller extends base_controller {
                 $this->template->content->success = NULL;
             }
             elseif($success == 'length') {
-                $this->template->content->error = "Your alias must be at least 3 characters.";
+                $this->template->content->success = "Your alias must be at least 3 characters.";
+            }
+            else {
+                $this->template->content->error = "Watchu talkin' bout, ".$success."?";
             }
         }
         elseif($alias == NULL) {
@@ -314,7 +317,7 @@ class users_controller extends base_controller {
         }
         else {
             Router::redirect("/users/profile/");
-            $this->template->error   = "Something went wrong with the update query. Try again?";
+            $this->template->content->error   = "Something went wrong with the update query. Try again?";
         }
 
     }
