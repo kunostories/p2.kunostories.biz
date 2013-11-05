@@ -319,7 +319,6 @@ class users_controller extends base_controller {
             Router::redirect("/users/profile/");
             $this->template->content->error   = "Something went wrong with the update query. Try again?";
         }
-
     }
 
 } # end of the class
