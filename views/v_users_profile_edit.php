@@ -40,5 +40,4 @@
 
 	<input class="btn btn-lg btn-warning" type="submit" value="Edit Profile">
 </form>
-
 <br>
